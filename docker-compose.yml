@@ -1,0 +1,52 @@
+version: '2'
+ 
+services:
+    reverseproxy:
+        image: reverseproxy
+        ports:
+            - 8081:8081
+        restart: always
+ 
+    sabnzbd:
+        depends_on:
+            - reverseproxy
+        image: linuxserver/sabnzbd:latest
+        restart: always
+        volumes:
+            - /volume1/mediatools/sabnzbd/incomplete-downloads:/incomplete-downloads
+            - /volume1/Media/00-UsenetIncoming:/downloads
+            - /volume1/mediatools/sabnzbd/configs:/config
+        environment:
+            - TZ=PST8PDT
+            - PUID=1027
+            - PGID=65536
+ 
+    sonarr:
+        depends_on:
+            - reverseproxy
+        image: linuxserver/sonarr:latest
+        restart: always
+        volumes:
+            - /volume1/Media/00-UsenetIncoming/TV:/tv
+            - /volume1/Media/00-UsenetIncoming:/downloads
+            - /volume1/mediatools/sonarr:/config
+        environment:
+            - TZ=PST8PDT
+            - PUID=1027
+            - PGID=65536
+        
+    couchpotato:
+        depends_on:
+            - reverseproxy
+        image: linuxserver/couchpotato:latest
+        restart: always
+        volumes:
+            - /volume1/Media/00-UsenetIncoming/Movies:/movies
+            - /volume1/Media/00-UsenetIncoming:/downloads
+            - /volume1/mediatools/couchpotato:/config
+        environment:
+            - TZ=PST8PDT
+            - PUID=1027
+            - PGID=65536
+        
+ 
