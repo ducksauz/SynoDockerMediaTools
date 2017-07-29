@@ -4,8 +4,13 @@ services:
     reverseproxy:
         image: reverseproxy
         ports:
-            - 8081:8081
+            - 80:80
+            - 443:443
         restart: always
+        volumes:
+            - /usr/syno/etc/certificate/system/default:/etc/ssl
+            - /usr/syno/etc/ssl/dh2048.pem:/etc/ssl/dh2048.pem
+        
  
     sabnzbd:
         depends_on:
