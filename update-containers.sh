@@ -9,4 +9,4 @@ docker pull linuxserver/couchpotato:latest
 
 # restart all the things
 docker-compose -f docker-compose.yml down
-docker-compose -f docker-compose.yml -d up
+docker-compose -f docker-compose.yml up -d
