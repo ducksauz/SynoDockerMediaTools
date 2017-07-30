@@ -3,4 +3,5 @@
 /usr/bin/moin server standalone \
     --port=9100 \
     --hostname="" \
-    --config-dir=/moin
+    --config-dir=/moin \
+    --docs=/moin/htdocs

@@ -53,5 +53,15 @@ services:
             - TZ=PST8PDT
             - PUID=1027
             - PGID=65536
-        
  
+    moinmoin:
+        depends_on:
+            - reverseproxy
+        image: moinmoin:latest
+        restart: always
+        volumes:
+            - /volume1/mediatools/moin:/moin
+        environment:
+            - TZ=PST8PDT
+            - PUID=1027
+            - PGID=65536
