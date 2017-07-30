@@ -22,3 +22,7 @@ Docker and nginx configuration for running a selection of media tools and moinmo
 * TZ should be set to your appropriate timezone.
 * PUID and PGID need to be set to the UID and GID of the user on the NAS that owns the config and data files that are volume mapped into the containers.
 
+#### Moinmoin
+* Moinmoin is running in standalone server mode using the builtin webserver in moinmoin
+* Moinmoin is served at the webserver root (/)
+* No wikiconfig.py is provided because I was moving an existing moinmoin wiki to this new box
