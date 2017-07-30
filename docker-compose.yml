@@ -7,10 +7,11 @@ services:
             - 80:80
             - 443:443
         restart: always
+        # map default certificate and dh file for NAS into nginx container
+        # for ease of certificate management.
         volumes:
             - /usr/syno/etc/certificate/system/default:/etc/ssl
             - /usr/syno/etc/ssl/dh2048.pem:/etc/ssl/dh2048.pem
-        
  
     sabnzbd:
         depends_on:
@@ -20,7 +21,7 @@ services:
         volumes:
             - /volume1/mediatools/sabnzbd/incomplete-downloads:/incomplete-downloads
             - /volume1/Media/00-UsenetIncoming:/downloads
-            - /volume1/mediatools/sabnzbd/configs:/config
+            - /volume1/mediatools/sabnzbd/config:/config
         environment:
             - TZ=PST8PDT
             - PUID=1027
