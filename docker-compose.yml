@@ -66,3 +66,18 @@ services:
             - TZ=PST8PDT
             - PUID=1027
             - PGID=65536
+
+    plexpy:
+        depends_on:
+            - reverseproxy
+        image: linuxserver/plexpy:latest
+        restart: always
+        volumes:
+            - /volume1/Plex/Library/Logs:/logs:ro
+            - /volume1/mediatools/plexpy:/config
+        environment:
+            - TZ=PST8PDT
+            - PUID=1027
+            - PGID=65536
+
+

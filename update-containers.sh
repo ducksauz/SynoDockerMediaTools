@@ -6,6 +6,7 @@ docker build -t moinmoin:latest dockerfiles/moinmoin
 docker pull linuxserver/sabnzbd:latest
 docker pull linuxserver/sonarr:latest
 docker pull linuxserver/couchpotato:latest
+docker pull linuxserver/plexpy:latest
 
 # restart all the things
 docker-compose -f docker-compose.yml down
