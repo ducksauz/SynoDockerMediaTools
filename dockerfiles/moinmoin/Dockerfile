@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpinebase:latest
 MAINTAINER John Duksta <john@duksta.org>
 
 # MoinMoin source install lovingly borrowed from 
