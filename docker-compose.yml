@@ -1,6 +1,12 @@
 version: '2'
  
 services:
+    sshbastion:
+        image: sshbastion
+        ports:
+            - 2200:2200
+        restart: always
+ 
     reverseproxy:
         image: reverseproxy
         ports:
