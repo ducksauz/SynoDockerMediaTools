@@ -15,7 +15,7 @@ COPY sshd_config /etc/ssh/sshd_config
 RUN adduser -D -s /bin/zsh bastion
 RUN passwd -u -d bastion
 
-ONBUILD RUN ssh-keygen -A
+RUN ssh-keygen -A
 
 RUN mkdir /home/bastion/.ssh/
 RUN chown -R bastion:bastion /home/bastion/.ssh
