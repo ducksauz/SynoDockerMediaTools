@@ -86,14 +86,4 @@ services:
             - PUID=1027
             - PGID=65536
 
-    muximux:
-        depends_on:
-            - reverseproxy
-        image: linuxserver/muximux:latest
-        restart: always
-        volumes:
-            - /volume1/mediatools/muximux:/config
-        environment:
-            - TZ=PST8PDT
-            - PUID=1027
-            - PGID=65536
+
