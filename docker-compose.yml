@@ -26,7 +26,7 @@ services:
         restart: always
         volumes:
             - /volume1/mediatools/sabnzbd/incomplete-downloads:/incomplete-downloads
-            - /volume1/Media/00-UsenetIncoming:/downloads
+            - /volume1/Media:/downloads
             - /volume1/mediatools/sabnzbd/config:/config
         environment:
             - TZ=PST8PDT
@@ -39,7 +39,7 @@ services:
         image: linuxserver/sonarr:latest
         restart: always
         volumes:
-            - /volume1/Media/00-UsenetIncoming/TV:/tv
+            - /volume1/Media:/tv
             - /volume1/Media/00-UsenetIncoming:/downloads
             - /volume1/mediatools/sonarr:/config
         environment:
@@ -53,7 +53,7 @@ services:
         image: linuxserver/couchpotato:latest
         restart: always
         volumes:
-            - /volume1/Media/00-UsenetIncoming/Movies:/movies
+            - /volume1/Media/Movies:/movies
             - /volume1/Media/00-UsenetIncoming:/downloads
             - /volume1/mediatools/couchpotato:/config
         environment:
