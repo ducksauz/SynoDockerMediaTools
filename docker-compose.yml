@@ -47,6 +47,20 @@ services:
             - PUID=1027
             - PGID=65536
         
+    radarr:
+        depends_on:
+            - reverseproxy
+        image: linuxserver/radarr:latest
+        restart: always
+        volumes:
+            - /volume1/Media/Movies:/movies
+            - /volume1/Media/00-UsenetIncoming:/downloads
+            - /volume1/mediatools/radarr:/config
+        environment:
+            - TZ=PST8PDT
+            - PUID=1027
+            - PGID=65536
+        
     couchpotato:
         depends_on:
             - reverseproxy
@@ -81,6 +95,22 @@ services:
         volumes:
             - /volume1/Plex/Library/Logs:/logs:ro
             - /volume1/mediatools/plexpy:/config
+        environment:
+            - TZ=PST8PDT
+            - PUID=1027
+            - PGID=65536
+
+    transmission:
+        depends_on:
+            - reverseproxy
+        image: linuxserver/transmission:latest
+        restart: always
+        ports:
+            - 51413:51413
+        volumes:
+            - /volume1/Media/Torrents:/downloads
+            - /volume1/Media/Torrents/watch:/watch
+            - /volume1/mediatools/transmission:/config
         environment:
             - TZ=PST8PDT
             - PUID=1027

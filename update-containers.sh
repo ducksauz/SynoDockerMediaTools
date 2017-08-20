@@ -8,6 +8,7 @@ docker build -t moinmoin:latest dockerfiles/moinmoin
 docker build -t reverseproxy:latest dockerfiles/reverseproxy
 docker pull linuxserver/sabnzbd:latest
 docker pull linuxserver/sonarr:latest
+docker pull linuxserver/radarr:latest
 docker pull linuxserver/couchpotato:latest
 docker pull linuxserver/plexpy:latest
 
