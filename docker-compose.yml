@@ -40,7 +40,7 @@ services:
         restart: always
         volumes:
             - /volume1/Media:/tv
-            - /volume1/Media/00-UsenetIncoming:/downloads
+            - /volume1/Media:/downloads
             - /volume1/mediatools/sonarr:/config
         environment:
             - TZ=PST8PDT
@@ -54,7 +54,7 @@ services:
         restart: always
         volumes:
             - /volume1/Media/Movies:/movies
-            - /volume1/Media/00-UsenetIncoming:/downloads
+            - /volume1/Media:/downloads
             - /volume1/mediatools/radarr:/config
         environment:
             - TZ=PST8PDT
