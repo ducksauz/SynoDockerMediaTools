@@ -1,5 +1,7 @@
 #!/bin/sh
 
+COMPOSE_HTTP_TIMEOUT=120
+
 # build/pull updated containers
 docker pull alpine:latest
 docker build -t alpinebase:latest dockerfiles/alpinebase
@@ -10,7 +12,7 @@ docker pull linuxserver/sabnzbd:latest
 docker pull linuxserver/sonarr:latest
 docker pull linuxserver/radarr:latest
 docker pull linuxserver/couchpotato:latest
-docker pull linuxserver/plexpy:latest
+docker pull linuxserver/tautulli:latest
 
 # restart all the things
 docker-compose -f docker-compose.yml down

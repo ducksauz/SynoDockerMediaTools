@@ -87,14 +87,16 @@ services:
             - PUID=1027
             - PGID=65536
 
-    plexpy:
+    tautulli:
         depends_on:
             - reverseproxy
-        image: linuxserver/plexpy:latest
+        image: linuxserver/tautulli:latest
         restart: always
+        ports:
+            - 8181:8181
         volumes:
             - /volume1/Plex/Library/Logs:/logs:ro
-            - /volume1/mediatools/plexpy:/config
+            - /volume1/mediatools/tautulli:/config
         environment:
             - TZ=PST8PDT
             - PUID=1027
