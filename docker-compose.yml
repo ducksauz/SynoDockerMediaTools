@@ -92,8 +92,6 @@ services:
             - reverseproxy
         image: linuxserver/tautulli:latest
         restart: always
-        ports:
-            - 8181:8181
         volumes:
             - /volume1/Plex/Library/Logs:/logs:ro
             - /volume1/mediatools/tautulli:/config
