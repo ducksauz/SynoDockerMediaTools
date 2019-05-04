@@ -1,12 +1,12 @@
 version: '2'
  
 services:
-    sshbastion:
-        image: sshbastion
-        ports:
-            - 2200:2200
-        restart: always
- 
+#    sshbastion:
+#        image: sshbastion
+#        ports:
+#            - 2200:2200
+#        restart: always
+# 
     reverseproxy:
         image: reverseproxy
         ports:
@@ -25,12 +25,12 @@ services:
         image: linuxserver/sabnzbd:latest
         restart: always
         volumes:
-            - /volume1/mediatools/sabnzbd/incomplete-downloads:/incomplete-downloads
+            - /volume3/mediatools/sabnzbd/incomplete-downloads:/incomplete-downloads
             - /volume1/Media:/downloads
-            - /volume1/mediatools/sabnzbd/config:/config
+            - /volume3/mediatools/sabnzbd/config:/config
         environment:
             - TZ=PST8PDT
-            - PUID=1027
+            - PUID=1028
             - PGID=65536
  
     sonarr:
@@ -41,10 +41,10 @@ services:
         volumes:
             - /volume1/Media:/tv
             - /volume1/Media:/downloads
-            - /volume1/mediatools/sonarr:/config
+            - /volume3/mediatools/sonarr:/config
         environment:
             - TZ=PST8PDT
-            - PUID=1027
+            - PUID=1028
             - PGID=65536
         
     radarr:
@@ -55,10 +55,10 @@ services:
         volumes:
             - /volume1/Media/Movies:/movies
             - /volume1/Media:/downloads
-            - /volume1/mediatools/radarr:/config
+            - /volume3/mediatools/radarr:/config
         environment:
             - TZ=PST8PDT
-            - PUID=1027
+            - PUID=1028
             - PGID=65536
         
     couchpotato:
@@ -69,10 +69,10 @@ services:
         volumes:
             - /volume1/Media/Movies:/movies
             - /volume1/Media/00-UsenetIncoming:/downloads
-            - /volume1/mediatools/couchpotato:/config
+            - /volume3/mediatools/couchpotato:/config
         environment:
             - TZ=PST8PDT
-            - PUID=1027
+            - PUID=1028
             - PGID=65536
  
     moinmoin:
@@ -81,10 +81,10 @@ services:
         image: moinmoin:latest
         restart: always
         volumes:
-            - /volume1/mediatools/moin:/moin
+            - /volume3/mediatools/moin:/moin
         environment:
             - TZ=PST8PDT
-            - PUID=1027
+            - PUID=1028
             - PGID=65536
 
     tautulli:
@@ -94,10 +94,10 @@ services:
         restart: always
         volumes:
             - /volume1/Plex/Library/Logs:/logs:ro
-            - /volume1/mediatools/tautulli:/config
+            - /volume3/mediatools/tautulli:/config
         environment:
             - TZ=PST8PDT
-            - PUID=1027
+            - PUID=1028
             - PGID=65536
 
     transmission:
@@ -110,10 +110,25 @@ services:
         volumes:
             - /volume1/Media/Torrents:/downloads
             - /volume1/Media/Torrents/watch:/watch
-            - /volume1/mediatools/transmission:/config
+            - /volume3/mediatools/transmission:/config
         environment:
             - TZ=PST8PDT
-            - PUID=1027
+            - PUID=1028
             - PGID=65536
 
+#    graphite:
+#        depends_on:
+#            - reverseproxy
+#        image: graphiteapp/graphite-statsd
+#        restart: always
+#        ports:
+#            - 82:80
+#            - "2003-2004:2003-2004"
+#            - "2023-2024:2023-2024"
+#            - "8125:8125/udp"
+#            - "8126:8126"
+#        volumes:
+#            - /volume3/mediatools/graphite/conf:/opt/graphite/conf
+#            - /volume3/mediatools/graphite/storage:/opt/graphite/storage
+#            - /volume3/mediatools/graphite/statsd:/opt/statsd
 
