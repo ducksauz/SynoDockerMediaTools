@@ -1,12 +1,7 @@
 version: '2'
  
 services:
-#    sshbastion:
-#        image: sshbastion
-#        ports:
-#            - 2200:2200
-#        restart: always
-# 
+
     reverseproxy:
         image: reverseproxy
         ports:
@@ -99,36 +94,4 @@ services:
             - TZ=PST8PDT
             - PUID=1028
             - PGID=65536
-
-    transmission:
-        depends_on:
-            - reverseproxy
-        image: linuxserver/transmission:latest
-        restart: always
-        ports:
-            - 51413:51413
-        volumes:
-            - /volume1/Media/Torrents:/downloads
-            - /volume1/Media/Torrents/watch:/watch
-            - /volume3/mediatools/transmission:/config
-        environment:
-            - TZ=PST8PDT
-            - PUID=1028
-            - PGID=65536
-
-#    graphite:
-#        depends_on:
-#            - reverseproxy
-#        image: graphiteapp/graphite-statsd
-#        restart: always
-#        ports:
-#            - 82:80
-#            - "2003-2004:2003-2004"
-#            - "2023-2024:2023-2024"
-#            - "8125:8125/udp"
-#            - "8126:8126"
-#        volumes:
-#            - /volume3/mediatools/graphite/conf:/opt/graphite/conf
-#            - /volume3/mediatools/graphite/storage:/opt/graphite/storage
-#            - /volume3/mediatools/graphite/statsd:/opt/statsd
 

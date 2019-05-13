@@ -5,7 +5,6 @@ COMPOSE_HTTP_TIMEOUT=120
 # build/pull updated containers
 docker pull alpine:latest
 docker build -t alpinebase:latest dockerfiles/alpinebase
-docker build -t sshbastion:latest dockerfiles/sshbastion
 docker build -t moinmoin:latest dockerfiles/moinmoin
 docker build -t reverseproxy:latest dockerfiles/reverseproxy
 docker pull linuxserver/sabnzbd:latest
