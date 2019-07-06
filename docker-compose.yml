@@ -1,4 +1,4 @@
-version: '2'
+version: '3.3'
  
 services:
 
@@ -56,20 +56,6 @@ services:
             - PUID=1028
             - PGID=65536
         
-    couchpotato:
-        depends_on:
-            - reverseproxy
-        image: linuxserver/couchpotato:latest
-        restart: always
-        volumes:
-            - /volume1/Media/Movies:/movies
-            - /volume1/Media/00-UsenetIncoming:/downloads
-            - /volume3/mediatools/couchpotato:/config
-        environment:
-            - TZ=PST8PDT
-            - PUID=1028
-            - PGID=65536
- 
     moinmoin:
         depends_on:
             - reverseproxy
@@ -95,3 +81,69 @@ services:
             - PUID=1028
             - PGID=65536
 
+    grafana:
+        depends_on:
+            - reverseproxy
+        image: grafana/grafana
+        user: "1030"
+        #container_name: grafana
+        restart: always
+        links:
+            - prometheus
+        #ports:
+        #  - "3000:3000"
+        volumes:
+            - /volume3/prometheus/configs/grafana.ini:/etc/grafana/grafana.ini
+            - /volume3/prometheus/data/grafana:/var/lib/grafana
+
+    prometheus:
+        depends_on:
+            - reverseproxy
+        image: prom/prometheus
+        user: "1031"
+        #container_name: prometheus
+        restart: always
+        links:
+            - alertmanager
+            - node-exporter
+        #ports:
+        #  - "9090:9090"
+        volumes:
+            - /volume3/prometheus/configs/prometheus.yml:/etc/prometheus/prometheus.yml
+            - /volume3/prometheus/data/prometheus:/prometheus
+        command:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus"
+            - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+            - "--web.console.templates=/usr/share/prometheus/consoles"
+            - "--web.external-url=https://cyril.dongmaan.net/prometheus/"
+
+    alertmanager:
+        depends_on:
+            - reverseproxy
+        image: prom/alertmanager
+        #container_name: alertmanager
+        restart: always
+        #ports:
+        #  - "9093:9093"
+        volumes:
+            - /volume3/prometheus/data/alertmanager:/alertmanager
+
+    node-exporter:
+        depends_on:
+            - reverseproxy
+        privileged: true
+        image: prom/node-exporter
+        #container_name: node-exporter
+        restart: always
+        #ports:
+        #  - "9100:9100"
+        volumes:
+            - /proc:/host/proc:ro
+            - /sys:/host/sys:ro
+            - /:/rootfs:ro
+        command:
+            - "--path.procfs=/host/proc"
+            - "--path.sysfs=/host/sys"
+            - "--collector.filesystem.ignored-mount-points"
+            - "^/(rootfs/)?(dev|etc|host|proc|run|sys|volume1)($$|/)"
