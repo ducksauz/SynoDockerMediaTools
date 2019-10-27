@@ -7,6 +7,9 @@ services:
         ports:
             - 80:80
             - 443:443
+        dns:
+            - 10.1.23.20
+            - 10.1.23.120
         restart: always
         # map default certificate and dh file for NAS into nginx container
         # for ease of certificate management.
@@ -117,6 +120,8 @@ services:
             - "--web.console.libraries=/usr/share/prometheus/console_libraries"
             - "--web.console.templates=/usr/share/prometheus/consoles"
             - "--web.external-url=https://cyril.dongmaan.net/prometheus/"
+            - "--storage.tsdb.retention.time=180d"
+            - "--storage.tsdb.retention.size=1TB"
 
     alertmanager:
         depends_on:
@@ -147,3 +152,17 @@ services:
             - "--path.sysfs=/host/sys"
             - "--collector.filesystem.ignored-mount-points"
             - "^/(rootfs/)?(dev|etc|host|proc|run|sys|volume1)($$|/)"
+
+    unifi-exporter:
+        image: unifi_exporter:latest
+        restart: 'always'
+        user: "1031"
+        extra_hosts:
+          - "cloudkey.dongmaan.net:10.1.23.5"
+        ports:
+          - "9130:9130"
+        volumes:
+          - /volume3/prometheus/configs:/etc/unifi_exporter
+        command:
+          - "-config.file=/etc/unifi_exporter/unifi_exporter.yml"
+
