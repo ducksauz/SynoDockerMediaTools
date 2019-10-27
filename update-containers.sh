@@ -11,6 +11,10 @@ docker pull linuxserver/sabnzbd:latest
 docker pull linuxserver/sonarr:latest
 docker pull linuxserver/radarr:latest
 docker pull linuxserver/tautulli:latest
+docker pull grafana/grafana:latest
+docker pull prom/prometheus:latest
+docker pull prom/alertmanager:latest
+docker pull prom/node-exporter:latest
 
 # restart all the things
 docker-compose -f docker-compose.yml down
