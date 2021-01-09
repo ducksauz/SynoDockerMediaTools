@@ -158,7 +158,7 @@ services:
         restart: 'always'
         user: "1031"
         extra_hosts:
-          - "cloudkey.dongmaan.net:10.1.23.5"
+          - "cyril.dongmaan.net:10.1.23.20"
         ports:
           - "9130:9130"
         volumes:
