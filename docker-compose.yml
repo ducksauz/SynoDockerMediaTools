@@ -159,6 +159,7 @@ services:
         user: "1031"
         extra_hosts:
           - "cyril.dongmaan.net:10.1.23.20"
+          - "gateway.dongmaan.net:10.1.23.1"
         ports:
           - "9130:9130"
         volumes:

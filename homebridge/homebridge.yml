@@ -1,0 +1,16 @@
+---
+version: "2"
+services:
+  homebridge:
+    image: oznu/homebridge:latest
+    container_name: homebridge
+    network_mode: host
+    environment:
+      - PUID=1028
+      - PGID=65536
+      - HOMEBRIDGE_CONFIG_UI=1
+      - HOMEBRIDGE_CONFIG_UI_PORT=6969
+      - MEM_LIMIT=128M #optional
+    volumes:
+      - /volume3/homebridge:/homebridge
+    restart: unless-stopped
