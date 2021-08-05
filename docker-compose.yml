@@ -153,17 +153,3 @@ services:
             - "--collector.filesystem.ignored-mount-points"
             - "^/(rootfs/)?(dev|etc|host|proc|run|sys|volume1)($$|/)"
 
-    unifi-exporter:
-        image: unifi_exporter:latest
-        restart: 'always'
-        user: "1031"
-        extra_hosts:
-          - "cyril.dongmaan.net:10.1.23.20"
-          - "gateway.dongmaan.net:10.1.23.1"
-        ports:
-          - "9130:9130"
-        volumes:
-          - /volume3/prometheus/configs:/etc/unifi_exporter
-        command:
-          - "-config.file=/etc/unifi_exporter/unifi_exporter.yml"
-
