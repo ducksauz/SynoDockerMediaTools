@@ -15,6 +15,7 @@ docker pull grafana/grafana:latest
 docker pull prom/prometheus:latest
 docker pull prom/alertmanager:latest
 docker pull prom/node-exporter:latest
+docker pull golift/unifi-poller:latest
 
 # restart all the things
 docker-compose -f docker-compose.yml down

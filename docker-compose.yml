@@ -153,3 +153,20 @@ services:
             - "--collector.filesystem.ignored-mount-points"
             - "^/(rootfs/)?(dev|etc|host|proc|run|sys|volume1)($$|/)"
 
+    unpoller:
+       depends_on:
+           - prometheus
+           - grafana
+       image: golift/unifi-poller
+       restart: unless-stopped
+       volumes:
+           - /volume3/unpoller:/etc/unifi-poller
+
+    bind-exporter:
+       network_mode: "host"
+       depends_on:
+           - prometheus
+           - grafana
+       image: prometheuscommunity/bind-exporter
+       restart: unless-stopped
+
