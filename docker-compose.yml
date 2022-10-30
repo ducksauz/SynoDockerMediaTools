@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.4'
  
 services:
 
@@ -170,3 +170,40 @@ services:
        image: prometheuscommunity/bind-exporter
        restart: unless-stopped
 
+
+    miniflux:
+      image: ${MINIFLUX_IMAGE:-miniflux/miniflux:latest}
+      container_name: miniflux
+      restart: always
+      #ports:
+      #  - "8090:8080"
+      depends_on:
+        - db
+      environment:
+        - DATABASE_URL=${MF_DATABASE_URL}
+        - BASE_URL=${MF_BASE_URL}
+        - OAUTH2_PROVIDER=${MF_OAUTH2_PROVIDER}
+        - OAUTH2_CLIENT_ID=${MF_OAUTH2_CLIENT_ID}
+        - OAUTH2_CLIENT_SECRET=${MF_OAUTH2_CLIENT_SECRET}
+        - OAUTH2_USER_CREATION=${MF_OAUTH2_USER_CREATION}
+        - OAUTH2_REDIRECT_URL=${MF_OAUTH2_REDIRECT_URL}
+        - DEBUG=1
+      # Optional health check:
+      # healthcheck:
+      #  test: ["CMD", "/usr/bin/miniflux", "-healthcheck", "auto"]
+
+    db:
+      image: postgres:latest
+      container_name: postgres
+      environment:
+        - POSTGRES_USER=${PG_POSTGRES_USER}
+        - POSTGRES_PASSWORD=${PG_POSTGRES_PASSWORD}
+      volumes:
+        - miniflux-db:/var/lib/postgresql/data
+      healthcheck:
+        test: ["CMD", "pg_isready", "-U", "miniflux"]
+        interval: 10s
+        start_period: 30s
+
+volumes:
+  miniflux-db:
