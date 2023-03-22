@@ -170,6 +170,19 @@ services:
        image: prometheuscommunity/bind-exporter
        restart: unless-stopped
 
+    gollum:
+      image: gollumwiki/gollum:master
+      restart: always
+      depends_on:
+        - reverseproxy
+      # ports:
+      #   - 4567:4567
+      volumes:
+        - /volume3/gollum-wiki/config.rb:/etc/gollum/config.rb
+        - /volume3/gollum-wiki/wikidata:/wiki
+      command:
+        - "--config=/etc/gollum/config.rb"
+        - "--base-path wiki"
 
     miniflux:
       image: ${MINIFLUX_IMAGE:-miniflux/miniflux:latest}
@@ -178,6 +191,7 @@ services:
       #ports:
       #  - "8090:8080"
       depends_on:
+        - reverseproxy
         - db
       environment:
         - DATABASE_URL=${MF_DATABASE_URL}
