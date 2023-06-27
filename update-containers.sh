@@ -10,6 +10,8 @@ docker build -t reverseproxy:latest dockerfiles/reverseproxy
 docker pull linuxserver/sabnzbd:latest
 docker pull linuxserver/sonarr:latest
 docker pull linuxserver/radarr:latest
+docker pull lscr.io/linuxserver/transmission:latest
+docker pull lscr.io/linuxserver/overseerr:latest
 docker pull linuxserver/tautulli:latest
 docker pull grafana/grafana:latest
 docker pull prom/prometheus:latest

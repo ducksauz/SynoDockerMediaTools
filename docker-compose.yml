@@ -4,6 +4,7 @@ services:
 
     reverseproxy:
         image: reverseproxy
+        container_name: reverseproxy
         ports:
             - 80:80
             - 443:443
@@ -21,6 +22,7 @@ services:
         depends_on:
             - reverseproxy
         image: linuxserver/sabnzbd:latest
+        container_name: sabnzbd
         restart: always
         volumes:
             - /volume3/mediatools/sabnzbd/incomplete-downloads:/incomplete-downloads
@@ -35,7 +37,8 @@ services:
         depends_on:
             - reverseproxy
         image: linuxserver/sonarr:latest
-        restart: always
+        container_name: sonarr
+        restart: unless-stopped
         volumes:
             - /volume1/Media:/tv
             - /volume1/Media:/downloads
@@ -49,7 +52,8 @@ services:
         depends_on:
             - reverseproxy
         image: linuxserver/radarr:latest
-        restart: always
+        container_name: radarr
+        restart: unless-stopped
         volumes:
             - /volume1/Media/Movies:/movies
             - /volume1/Media:/downloads
@@ -58,11 +62,47 @@ services:
             - TZ=PST8PDT
             - PUID=1028
             - PGID=65536
+
+    overseerr:
+        depends_on:
+            - reverseproxy
+        image: lscr.io/linuxserver/overseerr:latest
+        container_name: overseerr
+        restart: unless-stopped
+        environment:
+          - TZ=PST8PDT
+          - PUID=1028
+          - PGID=65536
+        volumes:
+          - /volume3/mediatools/overseerr:/config
+        ports:
+          - 5055:5055
+
+
+    transmission:
+        depends_on:
+            - reverseproxy
+        image: lscr.io/linuxserver/transmission:latest
+        container_name: transmission
+        restart: unless-stopped
+        ports:
+            - 51413:51413
+        volumes:
+            - /volume1/Media/Torrents:/downloads
+            - /volume1/Media/Torrents/watch:/watch
+            - /volume3/mediatools/transmission:/config
+        environment:
+            - TZ=PST8PDT
+            - PUID=1028
+            - PGID=65536
+            #- TRANSMISSION_WEB_HOME= /transmission
+
         
     moinmoin:
         depends_on:
             - reverseproxy
         image: moinmoin:latest
+        container_name: moinmoin
         restart: always
         volumes:
             - /volume3/mediatools/moin:/moin
@@ -75,6 +115,7 @@ services:
         depends_on:
             - reverseproxy
         image: linuxserver/tautulli:latest
+        container_name: tatulli
         restart: always
         volumes:
             - /volume1/Plex/Library/Logs:/logs:ro
@@ -88,8 +129,8 @@ services:
         depends_on:
             - reverseproxy
         image: grafana/grafana
+        container_name: grafana
         user: "1030"
-        #container_name: grafana
         restart: always
         links:
             - prometheus
@@ -103,8 +144,8 @@ services:
         depends_on:
             - reverseproxy
         image: prom/prometheus
+        container_name: prometheus
         user: "1031"
-        #container_name: prometheus
         restart: always
         links:
             - alertmanager
@@ -127,7 +168,7 @@ services:
         depends_on:
             - reverseproxy
         image: prom/alertmanager
-        #container_name: alertmanager
+        container_name: alertmanager
         restart: always
         #ports:
         #  - "9093:9093"
@@ -139,7 +180,7 @@ services:
             - reverseproxy
         privileged: true
         image: prom/node-exporter
-        #container_name: node-exporter
+        container_name: node-exporter
         restart: always
         #ports:
         #  - "9100:9100"
@@ -154,12 +195,13 @@ services:
             - "^/(rootfs/)?(dev|etc|host|proc|run|sys|volume1)($$|/)"
 
     unpoller:
-       depends_on:
+        depends_on:
            - prometheus
            - grafana
-       image: golift/unifi-poller
-       restart: unless-stopped
-       volumes:
+        image: golift/unifi-poller
+        container_name: unifi-poller
+        restart: unless-stopped
+        volumes:
            - /volume3/unpoller:/etc/unifi-poller
 
     bind-exporter:
@@ -168,10 +210,12 @@ services:
            - prometheus
            - grafana
        image: prometheuscommunity/bind-exporter
+       container_name: bind-exporter
        restart: unless-stopped
 
     gollum:
       image: gollumwiki/gollum:master
+      container_name: gollum
       restart: always
       depends_on:
         - reverseproxy
